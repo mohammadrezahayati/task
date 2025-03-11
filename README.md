@@ -1,7 +1,19 @@
 
 ## Getting Started
+## Installation Instructions
 
-First, run the development server:
+To get started with the project, you need to set up the dependencies. You can do this by using either **npm** or **yarn**. Follow the instructions below based on your package manager preference.
+
+### 1. Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/mohammadrezahayati/task.git
+cd <project_directory>
+```
+
+run the development server:
 
 ```bash
 npm run install
@@ -45,15 +57,3 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **Pagination**: The table supports pagination, which breaks down large datasets into manageable pages, improving performance and user experience.
 
 ---
-
-## Installation Instructions
-
-To get started with the project, you need to set up the dependencies. You can do this by using either **npm** or **yarn**. Follow the instructions below based on your package manager preference.
-
-### 1. Clone the Repository
-
-First, clone the repository to your local machine:
-
-```bash
-git clone https://github.com/mohammadrezahayati/task.git
-cd <project_directory>
