@@ -13,11 +13,16 @@ const ApplicationList = () => {
   const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
   const [sortColumn, setSortColumn] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage] = useState<number>(2);
+
   const { theme } = useTheme();
 
   const dragItem = useRef<any>(null);
   const dragOverItem = useRef<any>(null);
-
+  const inputStyle =
+    theme === 'dark' ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black';
   useEffect(() => {
     if (data?.columns) {
       setSelectedColumns(data.columns);
@@ -72,6 +77,19 @@ const ApplicationList = () => {
         return compareValues(valA, valB, sortOrder);
       })
     : [];
+
+  const filteredData = sortedData.filter((row) => {
+    return selectedColumns.some((column) => {
+      const value = String(row[column]).toLowerCase();
+      return value.includes(searchTerm.toLowerCase());
+    });
+  });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   const dragStart = (e: React.DragEvent, index: number) => {
     dragItem.current = index;
@@ -129,6 +147,16 @@ const ApplicationList = () => {
         </div>
       </div>
 
+      <div className='mb-4'>
+        <input
+          type='text'
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder='Search...'
+          className={`${inputStyle} w-full p-2 rounded-md`}
+        />
+      </div>
+
       <div className='overflow-x-auto'>
         <table className='w-full border rounded-lg shadow-md'>
           <thead
@@ -148,7 +176,7 @@ const ApplicationList = () => {
                   {column}{' '}
                   {sortColumn === column
                     ? sortOrder === 'asc'
-                      ? '🔼' 
+                      ? '🔼'
                       : '🔽'
                     : ''}
                 </th>
@@ -156,7 +184,7 @@ const ApplicationList = () => {
             </tr>
           </thead>
           <tbody>
-            {sortedData?.map((row, index) => (
+            {currentData.map((row, index) => (
               <tr
                 key={row.id || index}
                 className={`border-b transition ${
@@ -171,6 +199,26 @@ const ApplicationList = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div className='flex justify-between items-center mt-4'>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className='p-2 bg-gray-200 rounded-md hover:bg-gray-300'>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className='p-2 bg-gray-200 rounded-md hover:bg-gray-300'>
+          Next
+        </button>
       </div>
     </div>
   );
