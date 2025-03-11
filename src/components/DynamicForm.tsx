@@ -11,7 +11,7 @@ const DynamicForm = () => {
   const [dynamicOptions, setDynamicOptions] = useState({});
   const [visibleFields, setVisibleFields] = useState({});
   const [country, setCountry] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // Track submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     data: insuranceForms,
@@ -23,7 +23,6 @@ const DynamicForm = () => {
   });
 
   useEffect(() => {
-    // Load saved form data from local storage on mount
     const savedFormData = JSON.parse(localStorage.getItem('formData'));
     if (savedFormData) {
       setFormData(savedFormData);
@@ -32,13 +31,12 @@ const DynamicForm = () => {
 
   useEffect(() => {
     if (formData) {
-      // Auto-save form data to local storage every 5 seconds
       const autoSaveInterval = setInterval(() => {
         localStorage.setItem('formData', JSON.stringify(formData));
       }, 5000);
 
       return () => {
-        clearInterval(autoSaveInterval); // Clean up on component unmount
+        clearInterval(autoSaveInterval);
       };
     }
   }, [formData]);
@@ -166,7 +164,7 @@ const DynamicForm = () => {
         theme: theme,
         transition: Bounce,
       });
-      localStorage.removeItem('formData'); // Clear saved form data after submit
+      localStorage.removeItem('formData');
       console.log('Form submitted successfully:', response);
     } catch (error) {
       toast.error('Ooops Error Happen!', {

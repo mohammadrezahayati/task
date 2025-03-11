@@ -15,14 +15,12 @@ const ApplicationList = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const { theme } = useTheme();
 
-  // Store the drag state
   const dragItem = useRef<any>(null);
   const dragOverItem = useRef<any>(null);
 
-  // Set all columns as selected initially when data is available
   useEffect(() => {
     if (data?.columns) {
-      setSelectedColumns(data.columns); // Select all columns initially
+      setSelectedColumns(data.columns);
     }
   }, [data]);
 
@@ -34,12 +32,11 @@ const ApplicationList = () => {
     );
   };
 
-  // Toggle all columns (select/deselect all)
   const handleSelectAllColumns = () => {
     if (selectedColumns.length === data?.columns.length) {
-      setSelectedColumns([]); // Deselect all if all are selected
+      setSelectedColumns([]);
     } else {
-      setSelectedColumns(data?.columns || []); // Select all columns
+      setSelectedColumns(data?.columns || []);
     }
   };
 
@@ -52,7 +49,6 @@ const ApplicationList = () => {
     }
   };
 
-  // Function to compare values based on their type
   const compareValues = (a: any, b: any, sortOrder: 'asc' | 'desc') => {
     if (typeof a === 'string' && typeof b === 'string') {
       return sortOrder === 'asc' ? a.localeCompare(b) : b.localeCompare(a);
@@ -65,10 +61,9 @@ const ApplicationList = () => {
         ? a.getTime() - b.getTime()
         : b.getTime() - a.getTime();
     }
-    return 0; // Default return value for unsupported types
+    return 0;
   };
 
-  // Ensure data?.data is an array before calling .sort()
   const sortedData = Array.isArray(data?.data)
     ? data?.data.sort((a, b) => {
         if (!sortColumn) return 0;
@@ -78,19 +73,16 @@ const ApplicationList = () => {
       })
     : [];
 
-  // Handle drag start event
   const dragStart = (e: React.DragEvent, index: number) => {
     dragItem.current = index;
     e.dataTransfer.effectAllowed = 'move';
   };
 
-  // Handle drag over event
   const dragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault();
     dragOverItem.current = index;
   };
 
-  // Handle drag end event
   const dragEnd = () => {
     const draggedColumns = [...selectedColumns];
     const draggedItem = draggedColumns[dragItem.current];
@@ -112,7 +104,6 @@ const ApplicationList = () => {
       <div className='mb-4'>
         <h3 className='font-semibold mb-2'>Select Columns to Display</h3>
         <div className='flex items-center space-x-2 flex-wrap'>
-          {/* "Select All" checkbox */}
           <label className='flex w-full items-center space-x-2 cursor-pointer '>
             <input
               type='checkbox'
@@ -122,7 +113,6 @@ const ApplicationList = () => {
             />
             <span>Select All</span>
           </label>
-          {/* Individual column selection checkboxes */}
           {data?.columns.map((column: string) => (
             <label
               key={column}
@@ -158,8 +148,8 @@ const ApplicationList = () => {
                   {column}{' '}
                   {sortColumn === column
                     ? sortOrder === 'asc'
-                      ? '🔼' // Ascending arrow
-                      : '🔽' // Descending arrow
+                      ? '🔼' 
+                      : '🔽'
                     : ''}
                 </th>
               ))}
@@ -168,7 +158,7 @@ const ApplicationList = () => {
           <tbody>
             {sortedData?.map((row, index) => (
               <tr
-                key={row.id || index} // Ensure unique key if id is missing
+                key={row.id || index}
                 className={`border-b transition ${
                   theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
                 }`}>

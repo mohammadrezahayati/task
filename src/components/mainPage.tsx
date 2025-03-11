@@ -4,7 +4,7 @@ import ApplicationList from './ApplicationList';
 import { useTheme } from './context/createTheme';
 
 const MainPage: React.FC = () => {
-  const { theme, toggleTheme } = useTheme(); // Get the theme and toggle function from context
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div
@@ -15,7 +15,7 @@ const MainPage: React.FC = () => {
       }>
       <div className='container mx-auto px-6'>
         <button
-          onClick={toggleTheme} // Use the toggleTheme from context
+          onClick={toggleTheme}
           className='mb-4 p-2 border rounded bg-gray-300 dark:bg-gray-700 dark:text-white'>
           {theme === 'dark' ? 'Light' : 'Dark'} Mode
         </button>
